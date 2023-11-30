@@ -1,0 +1,152 @@
+<div class="sticky-top z-3 vh-100">
+	<div class="row bg-primary border-bottom border-1 rounded-3 p-2">
+		<div class="col-md-6 my-2">
+			<span class="text-light">Vendedor: </span
+			><span class="badge text-bg-warning">Dennys Sánchez Gutiérrez</span>
+			<div class="input-group mt-2">
+				<input type="text" class="form-control" placeholder="Número de DNI" />
+				<button
+					type="button"
+					class="btn btn-danger"
+					(click)="onClickClearCart()"
+					placement="bottom"
+					ngbTooltip="Busca al vendedor.">
+					<i class="bi bi-person-vcard"></i>
+				</button>
+			</div>
+		</div>
+		<div class="col-md-6 my-2">
+			<span class="text-light">Grupos de precios general:</span>
+			<div class="input-group my-2">
+				<select2
+					class="form-control"
+					[data]="[
+						{ label: 'Precio I', value: '1' },
+						{ label: 'Precio II', value: '2' },
+						{ label: 'Precio III', value: '3' },
+						{ label: 'Precio Oro', value: '4' },
+						{ label: 'Precio X', value: '5' }
+					]">
+				</select2>
+				<button
+					type="button"
+					class="btn btn-warning"
+					(click)="onClickClearCart()"
+					placement="bottom"
+					ngbTooltip="Al aplicar todos los productos cambiarán al grupo de precios seleccionado.">
+					<i class="bi bi-check-circle-fill"></i>
+					Aplicar
+				</button>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="btn-group">
+				<button
+					type="button"
+					class="btn btn-success"
+					(click)="onClickClearCart()"
+					placement="bottom"
+					ngbTooltip="Eliminar todos los productos del carrito.">
+					<i class="bi bi-stars"></i>
+					Limpiar
+				</button>
+				<button
+					type="button"
+					class="btn btn-success position-relative"
+					placement="bottom"
+					ngbTooltip="Cantidad de productos a vender.">
+					<i class="bi bi-boxes"></i>
+					<span
+						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-black">
+						{{ listSales.length }}
+						<span class="visually-hidden">Cantidad de productos</span>
+					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="row overflow-auto border-start border-end border-2 py-3 h-75 d-inline-block">
+		<!--Product select-->
+		<div *ngFor="let product of listSales; let i = index">
+			<div class="col-12 bg-light p-3 rounded-3 mb-3 border-3">
+				<div class="d-flex justify-content-between align-items-start">
+					<!-- Contenedor vacío para alinear el botón a la derecha -->
+					<span class="badge text-bg-primary">{{ product.stock }} und. en stock</span>
+					<button
+						class="btn-remove text-danger"
+						type="button"
+						aria-label="Close"
+						(click)="onClickRemove(i)"></button>
+				</div>
+				<div class="row align-items-center">
+					<!-- Controles de Cantidad y Precio -->
+					<div class="col-12">
+						<span class="my-1">[{{ product.code }}] {{ product.name }}</span>
+					</div>
+					<div class="col-lg-5 col-12 my-1">
+						<span>Cantidad:</span>
+						<div class="input-group">
+							<button
+								class="btn btn-outline-secondary"
+								type="button"
+								aria-label="Decrease quantity"
+								(click)="onClickDecrease(i)">
+								<i class="bi bi-dash-circle-fill"></i>
+							</button>
+							<input
+								type="number"
+								class="form-control text-center"
+								[(ngModel)]="product.cant"
+								(change)="onChangeCant(i)" />
+							<button
+								class="btn btn-outline-secondary"
+								type="button"
+								aria-label="Increase quantity"
+								(click)="onClickIncrease(i)">
+								<i class="bi bi-plus-circle-fill"></i>
+							</button>
+						</div>
+					</div>
+					<div class="col-lg-7 col-12 my-1">
+						<span>Descuento:</span>
+						<div class="input-group">
+							<input
+								class="form-control"
+								type="number"
+								[min]="0"
+								[(ngModel)]="product.valueDiscount"
+								(ngModelChange)="refreshPrice(i)" />
+							<select
+								class="form-control"
+								id="selectTypeDescount"
+								[(ngModel)]="product.typeDiscount"
+								(change)="refreshPrice(i)">
+								<option value="-1">Sin descuento</option>
+								<option value="0">Procentaje</option>
+								<option value="1">Fijo</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-12 mt-1 d-flex justify-content-between align-items-start">
+						<p class="mb-0">
+							<span class="fw-bolder">Precio x und: S/. </span
+							>{{ product.price | number: '1.2-2' }}
+						</p>
+						<p class="mb-0">
+							<span class="fw-bolder">Precio Total: S/. </span
+							>{{ product.priceTotal | number: '1.2-2' }}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Product select-->
+	</div>
+	<div class="row">
+		<div class="bg-primary rounded-3 p-3">
+			<p class="text-light fs-5">Sub-Total: S/. {{ subPriceTotalBuy | number: '1.2-2' }}</p>
+			<p class="text-light fs-5">IGV: S/. {{ igvPriceTotalBuy | number: '1.2-2' }}</p>
+			<p class="text-light fs-5">Total: S/. {{ priceTotalBuy | number: '1.2-2' }}</p>
+		</div>
+	</div>
+</div>

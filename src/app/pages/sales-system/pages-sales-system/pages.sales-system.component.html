@@ -1,0 +1,20 @@
+<app-header-sales-system></app-header-sales-system>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-auto bg-light border-3 border-end sticky-top">
+			<app-sidebar-sales-system></app-sidebar-sales-system>
+		</div>
+		<div class="col-sm">
+			<div class="row p-2">
+				<div class="col-xxl-7">
+					<!--contenido-->
+					<router-outlet></router-outlet>
+					<!--/contenido-->
+				</div>
+				<div class="col-xxl-5">
+					<app-shopping-cart></app-shopping-cart>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
